@@ -1,1 +1,44 @@
-/* You can add global styles to this file, and also import other style files */
+/* Golden Hour Valentine - Global Styles */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Golden hour palette - warm and slightly saturated */
+  --sun-gold: #FFB847;
+  --sun-center: #FFF6E8;
+  --sun-glow: #FFCC66;
+  --horizon-peach: #FFCBA4;
+  --sky-coral: #FF9478;
+  --sky-rose: #E8A8A8;
+  --sky-lavender: #D0B8E0;
+  --sky-violet: #A080C0;
+  --cloud-blush: #FFE8E0;
+  --cloud-gold: #FFE0C0;
+  --deep-amber: #E88030;
+  --warm-white: #FFF8F0;
+  --text-warm: #5C4033;
+  --text-soft: #7A6055;
+  
+  /* Timing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out-smooth: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--sky-violet);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

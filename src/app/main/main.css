@@ -1,0 +1,955 @@
+/* Golden Hour Valentine - Component Styles */
+
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* ================================
+   BASE CONTAINER
+================================ */
+.golden-hour {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ================================
+   SKY - Single smooth gradient
+================================ */
+.sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    180deg,
+    #5e4f7a 0%,
+    #7a6b98 8%,
+    #9484af 16%,
+    #ae9ec6 24%,
+    #c4b0d4 30%,
+    #d4b8c8 36%,
+    #deb4b4 42%,
+    #e8b0a0 48%,
+    #f0b094 54%,
+    #f4b890 58%,
+    #f8c08c 62%,
+    #fac888 66%,
+    #fcd090 70%,
+    #fdd8a0 75%,
+    #fee0b0 80%,
+    #ffe8c0 85%,
+    #fff0d0 90%,
+    #fff4dc 95%,
+    #fff8e8 100%
+  );
+  transition: background 1.4s ease-in-out;
+}
+
+/* Sky shifts lighter/dreamier when card appears */
+.scene-card .sky {
+  background: linear-gradient(
+    180deg,
+    #8878a8 0%,
+    #a094be 10%,
+    #b8aed0 20%,
+    #cfc4de 30%,
+    #e0d4e8 40%,
+    #ead8e0 48%,
+    #f0dcd8 54%,
+    #f4e0d4 60%,
+    #f8e6d8 66%,
+    #faeae0 72%,
+    #fcf0e8 78%,
+    #fef4f0 85%,
+    #fff8f6 92%,
+    #fffcfa 100%
+  );
+}
+
+/* ================================
+   HORIZON GLOW - soft atmospheric wash
+================================ */
+.horizon-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200%;
+  height: 50%;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 80% at 50% 100%,
+    rgba(255, 220, 160, 0.45) 0%,
+    rgba(255, 200, 140, 0.25) 30%,
+    rgba(255, 180, 120, 0.12) 50%,
+    transparent 70%
+  );
+  transition: opacity 1.4s ease-in-out;
+}
+
+.scene-card .horizon-glow {
+  opacity: 0.4;
+}
+
+/* ================================
+   TEXTURE OVERLAY - Paper grain
+================================ */
+.texture-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.10;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Warm color grain layer */
+.texture-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(255, 200, 150, 0.1) 0%, rgba(255, 180, 130, 0.15) 100%);
+}
+
+/* ================================
+   SUN RAYS - soft light beams
+================================ */
+.sun-rays {
+  position: absolute;
+  bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(6px);
+}
+
+.ray {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 350px;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 230, 180, 0.35) 0%,
+    rgba(255, 210, 150, 0.15) 40%,
+    transparent 100%
+  );
+  transform-origin: left center;
+  transform: rotate(calc(var(--ray-index) * 30deg));
+  animation: ray-pulse 5s ease-in-out infinite;
+  animation-delay: calc(var(--ray-index) * 0.25s);
+  opacity: 0.5;
+  border-radius: 4px;
+}
+
+@keyframes ray-pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: rotate(calc(var(--ray-index) * 30deg)) scaleX(0.85);
+  }
+  50% {
+    opacity: 0.55;
+    transform: rotate(calc(var(--ray-index) * 30deg)) scaleX(1);
+  }
+}
+
+/* Rays during transition - BURST */
+.scene-transitioning .ray {
+  animation: ray-burst 1.2s var(--ease-out-expo) forwards;
+}
+
+@keyframes ray-burst {
+  0% {
+    opacity: 0.5;
+    transform: rotate(calc(var(--ray-index) * 30deg)) scaleX(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: rotate(calc(var(--ray-index) * 30deg)) scaleX(3);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(calc(var(--ray-index) * 30deg)) scaleX(4);
+  }
+}
+
+/* Hide rays on card scene */
+.scene-card .sun-rays {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+/* ================================
+   THE SUN - soft, diffuse, atmospheric
+================================ */
+.sun {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 5;
+  padding: 0;
+  transition: transform 0.6s var(--ease-out-back);
+}
+
+.sun:hover:not(:disabled) {
+  transform: translateX(-50%) scale(1.06);
+}
+
+.sun:disabled {
+  cursor: default;
+}
+
+/* Outermost atmospheric haze */
+.sun-flare {
+  position: absolute;
+  inset: -60%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 230, 180, 0.25) 0%,
+    rgba(255, 215, 150, 0.15) 25%,
+    rgba(255, 200, 130, 0.07) 45%,
+    transparent 65%
+  );
+  animation: sun-flare-breathe 6s ease-in-out infinite;
+}
+
+@keyframes sun-flare-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+/* Middle glow halo */
+.sun-glow {
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 235, 190, 0.5) 0%,
+    rgba(255, 215, 150, 0.3) 30%,
+    rgba(255, 200, 130, 0.12) 55%,
+    transparent 70%
+  );
+  animation: sun-glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes sun-glow-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* Core of the sun - soft, not a hard ball */
+.sun-core {
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #FFFDF5 0%,
+    #FFF8E0 25%,
+    #FFECBE 50%,
+    #FFE0A0 75%,
+    #FFD488 100%
+  );
+  box-shadow:
+    0 0 40px 20px rgba(255, 220, 150, 0.35),
+    0 0 80px 40px rgba(255, 200, 120, 0.18),
+    0 0 140px 70px rgba(255, 180, 100, 0.08);
+  filter: blur(1px);
+  animation: sun-core-glow 4s ease-in-out infinite;
+}
+
+@keyframes sun-core-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 40px 20px rgba(255, 220, 150, 0.35),
+      0 0 80px 40px rgba(255, 200, 120, 0.18),
+      0 0 140px 70px rgba(255, 180, 100, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 0 50px 25px rgba(255, 220, 150, 0.40),
+      0 0 100px 50px rgba(255, 200, 120, 0.22),
+      0 0 160px 80px rgba(255, 180, 100, 0.10);
+  }
+}
+
+/* Sun during transition - EXPLODE */
+.scene-transitioning .sun {
+  animation: sun-burst 1.2s var(--ease-out-expo) forwards;
+}
+
+@keyframes sun-burst {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translateX(-50%) scale(2.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(4);
+    opacity: 0;
+  }
+}
+
+/* Hide sun on card scene */
+.scene-card .sun {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ================================
+   SUNBURST FLASH
+================================ */
+.sunburst-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 88%,
+    rgba(255, 250, 235, 1) 0%,
+    rgba(255, 240, 210, 0.7) 15%,
+    rgba(255, 225, 170, 0.35) 35%,
+    transparent 55%
+  );
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.scene-transitioning .sunburst-flash {
+  animation: flash-burst 1.2s var(--ease-out-expo) forwards;
+}
+
+@keyframes flash-burst {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ================================
+   CLOUDS - dreamy, soft, diffuse
+================================ */
+.clouds-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cloud {
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 250, 245, 0.6) 0%,
+    rgba(255, 240, 230, 0.45) 50%,
+    rgba(255, 230, 218, 0.3) 100%
+  );
+  border-radius: 100px;
+  filter: blur(4px);
+  box-shadow:
+    0 8px 40px rgba(255, 200, 150, 0.08);
+}
+
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.cloud-1 {
+  width: 200px;
+  height: 60px;
+  top: 20%;
+  left: -10%;
+  animation: drift-cloud 80s linear infinite;
+}
+.cloud-1::before { width: 80px; height: 80px; top: -35px; left: 30px; }
+.cloud-1::after { width: 100px; height: 90px; top: -40px; left: 90px; }
+
+.cloud-2 {
+  width: 280px;
+  height: 70px;
+  top: 35%;
+  left: 60%;
+  opacity: 0.7;
+  animation: drift-cloud 100s linear infinite reverse;
+}
+.cloud-2::before { width: 100px; height: 100px; top: -45px; left: 40px; }
+.cloud-2::after { width: 120px; height: 110px; top: -50px; left: 130px; }
+
+.cloud-3 {
+  width: 160px;
+  height: 50px;
+  top: 15%;
+  left: 40%;
+  opacity: 0.55;
+  animation: drift-cloud 70s linear infinite;
+  animation-delay: -20s;
+}
+.cloud-3::before { width: 65px; height: 65px; top: -28px; left: 25px; }
+.cloud-3::after { width: 80px; height: 75px; top: -32px; left: 70px; }
+
+.cloud-4 {
+  width: 220px;
+  height: 55px;
+  top: 50%;
+  left: -5%;
+  opacity: 0.45;
+  animation: drift-cloud 90s linear infinite;
+  animation-delay: -40s;
+}
+.cloud-4::before { width: 85px; height: 85px; top: -38px; left: 35px; }
+.cloud-4::after { width: 95px; height: 90px; top: -42px; left: 100px; }
+
+.cloud-5 {
+  width: 180px;
+  height: 45px;
+  top: 28%;
+  left: 75%;
+  opacity: 0.5;
+  animation: drift-cloud 85s linear infinite reverse;
+  animation-delay: -15s;
+}
+.cloud-5::before { width: 70px; height: 70px; top: -30px; left: 28px; }
+.cloud-5::after { width: 85px; height: 80px; top: -35px; left: 80px; }
+
+@keyframes drift-cloud {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(calc(100vw + 100%)); }
+}
+
+/* ================================
+   FLOATING ELEMENTS
+================================ */
+.floating-elements {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+:host ::ng-deep .floating-particle {
+  position: absolute;
+  bottom: -30px;
+  color: rgba(255, 210, 170, 0.45);
+  animation: float-up 25s linear infinite;
+  text-shadow: 0 0 12px rgba(255, 200, 100, 0.3);
+  filter: blur(0.5px);
+}
+
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% {
+    transform: translateY(-110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   SUNSET PROMPT
+================================ */
+.sunset-prompt {
+  position: absolute;
+  bottom: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  animation: prompt-fade-in 1.5s ease-out 0.5s both;
+}
+
+.prompt-text {
+  font-family: 'Caveat', cursive;
+  font-size: 2.4rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow:
+    0 2px 25px rgba(255, 190, 120, 0.6),
+    0 0 50px rgba(255, 210, 160, 0.35);
+  animation: prompt-pulse 3.5s ease-in-out infinite;
+  letter-spacing: 0.05em;
+}
+
+@keyframes prompt-fade-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes prompt-pulse {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* ================================
+   VALENTINE CARD
+================================ */
+.card-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  padding: 20px;
+}
+
+.valentine-card {
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(255, 253, 250, 0.84) 50%,
+    rgba(255, 250, 244, 0.80) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 32px;
+  padding: 48px 44px;
+  max-width: 440px;
+  width: 100%;
+  box-shadow:
+    0 20px 70px rgba(180, 130, 90, 0.14),
+    0 8px 25px rgba(200, 150, 100, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(200, 150, 100, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  animation: card-enter 0.8s var(--ease-out-back) both;
+  overflow: hidden;
+}
+
+.card-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  animation: shimmer 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes shimmer {
+  0%, 100% { left: -100%; }
+  50% { left: 150%; }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-content {
+  position: relative;
+  z-index: 1;
+}
+
+/* Card header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.decorative-heart {
+  color: var(--sky-coral);
+  font-size: 1.5rem;
+  animation: heart-float 3s ease-in-out infinite;
+  opacity: 0.65;
+}
+
+.decorative-heart.left { animation-delay: 0s; }
+.decorative-heart.right { animation-delay: 1.5s; }
+
+@keyframes heart-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-5px) scale(1.1); }
+}
+
+.headline {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 600;
+  color: var(--deep-amber);
+  text-align: center;
+  line-height: 1.1;
+  animation: headline-enter 0.6s var(--ease-out-back) 0.2s both;
+  text-shadow: 0 2px 12px rgba(200, 120, 50, 0.08);
+}
+
+@keyframes headline-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Recipient */
+.recipient {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.6rem;
+  color: var(--text-warm);
+  text-align: center;
+  margin-bottom: 20px;
+  animation: content-enter 0.5s ease-out 0.3s both;
+}
+
+/* Message */
+.message {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-soft);
+  text-align: center;
+  line-height: 1.8;
+  margin-bottom: 28px;
+  white-space: pre-line;
+  animation: content-enter 0.5s ease-out 0.4s both;
+}
+
+@keyframes content-enter {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Details box */
+.details-box {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 200, 150, 0.10) 0%,
+    rgba(255, 180, 130, 0.06) 100%
+  );
+  border: 1px solid rgba(255, 180, 130, 0.15);
+  border-radius: 20px;
+  padding: 20px 28px;
+  margin-bottom: 24px;
+  animation: content-enter 0.5s ease-out 0.5s both;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.detail-row:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 180, 130, 0.10);
+}
+
+.detail-icon {
+  color: var(--sun-gold);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.detail-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-warm);
+}
+
+/* Signature */
+.signature {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--deep-amber);
+  text-align: right;
+  margin-bottom: 28px;
+  animation: content-enter 0.5s ease-out 0.6s both;
+}
+
+/* Yes button */
+.yes-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 32px;
+  background: linear-gradient(
+    135deg,
+    var(--sun-gold) 0%,
+    var(--horizon-peach) 50%,
+    var(--sun-gold) 100%
+  );
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow:
+    0 6px 25px rgba(255, 180, 100, 0.28),
+    0 3px 8px rgba(232, 132, 44, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  animation: 
+    content-enter 0.5s ease-out 0.7s both,
+    button-shimmer 3s ease-in-out infinite 1.2s;
+  transition: all 0.3s var(--ease-out-back);
+  position: relative;
+  overflow: hidden;
+}
+
+.yes-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.yes-button:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow:
+    0 10px 35px rgba(255, 180, 100, 0.35),
+    0 5px 12px rgba(232, 132, 44, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.yes-button:hover::before {
+  left: 100%;
+}
+
+.yes-button:active {
+  transform: translateY(-1px) scale(1.01);
+}
+
+@keyframes button-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.button-text {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 3px rgba(180, 100, 50, 0.2);
+}
+
+.button-heart {
+  font-size: 1.3rem;
+  animation: heart-beat 1s ease-in-out infinite;
+}
+
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* ================================
+   CELEBRATION
+================================ */
+.celebration-response {
+  text-align: center;
+  margin-top: 24px;
+  animation: celebration-enter 0.6s var(--ease-out-back) both;
+}
+
+@keyframes celebration-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.celebration-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--deep-amber);
+  margin-bottom: 12px;
+  text-shadow: 0 2px 15px rgba(255, 180, 100, 0.2);
+}
+
+.celebration-hearts {
+  font-size: 2rem;
+  color: var(--sky-coral);
+  animation: hearts-bounce 0.8s ease-in-out infinite;
+  letter-spacing: 8px;
+}
+
+@keyframes hearts-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+/* Celebration confetti */
+.celebration-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 101;
+  overflow: hidden;
+}
+
+:host ::ng-deep .confetti-particle {
+  position: absolute;
+  top: -30px;
+  animation: confetti-fall linear forwards;
+  text-shadow: 0 0 10px rgba(255, 180, 100, 0.4);
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg) scale(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(15vh) translateX(var(--drift, 0)) rotate(180deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) translateX(calc(var(--drift, 0) * 2)) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 520px) {
+  .valentine-card {
+    padding: 36px 28px;
+    border-radius: 24px;
+  }
+  
+  .headline {
+    font-size: 2rem;
+  }
+  
+  .recipient {
+    font-size: 1.4rem;
+  }
+  
+  .message {
+    font-size: 1rem;
+  }
+  
+  .signature {
+    font-size: 1.5rem;
+  }
+  
+  .sun {
+    width: 160px;
+    height: 160px;
+    bottom: 13%;
+  }
+  
+  .prompt-text {
+    font-size: 2rem;
+  }
+  
+  .details-box {
+    padding: 16px 20px;
+  }
+  
+  .detail-text {
+    font-size: 0.95rem;
+  }
+  
+  .yes-button {
+    padding: 16px 28px;
+  }
+  
+  .button-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .valentine-card {
+    padding: 28px 20px;
+  }
+  
+  .headline {
+    font-size: 1.75rem;
+  }
+  
+  .card-header {
+    gap: 10px;
+  }
+  
+  .decorative-heart {
+    font-size: 1.2rem;
+  }
+}

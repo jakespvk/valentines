@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --blush: #FFE4EC;
+            --lavender: #E8E0F0;
+            --cream: #FFF9F0;
+            --rose: #FF8FA3;
+            --coral: #FFB5A7;
+            --deep-rose: #E75480;
+            --gold: #FFD700;
+            --cloud-white: rgba(255, 255, 255, 0.85);
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(
+                180deg,
+                #FFF0F5 0%,
+                #FFE4EC 20%,
+                #F8E1F4 40%,
+                #E8E0F0 60%,
+                #F0E6FA 80%,
+                #FFF9F5 100%
+            );
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Dreamy sky overlay */
+        .sky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Cloud layers */
+        .cloud-layer {
+            position: absolute;
+            width: 200%;
+            height: 100%;
+            background-repeat: repeat-x;
+            background-size: contain;
+        }
+
+        .cloud {
+            position: absolute;
+            background: var(--cloud-white);
+            border-radius: 100px;
+            filter: blur(2px);
+            opacity: 0.7;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+
+        /* Individual cloud styling */
+        .cloud-1 {
+            width: 180px;
+            height: 60px;
+            top: 8%;
+            animation: float-cloud 45s linear infinite;
+        }
+        .cloud-1::before { width: 80px; height: 80px; top: -40px; left: 25px; }
+        .cloud-1::after { width: 100px; height: 100px; top: -50px; left: 70px; }
+
+        .cloud-2 {
+            width: 220px;
+            height: 70px;
+            top: 15%;
+            left: 30%;
+            opacity: 0.5;
+            animation: float-cloud 60s linear infinite reverse;
+        }
+        .cloud-2::before { width: 90px; height: 90px; top: -45px; left: 35px; }
+        .cloud-2::after { width: 110px; height: 110px; top: -55px; left: 90px; }
+
+        .cloud-3 {
+            width: 150px;
+            height: 50px;
+            top: 70%;
+            left: 60%;
+            opacity: 0.6;
+            animation: float-cloud 55s linear infinite;
+        }
+        .cloud-3::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+        .cloud-3::after { width: 80px; height: 80px; top: -40px; left: 55px; }
+
+        .cloud-4 {
+            width: 200px;
+            height: 65px;
+            top: 80%;
+            left: 10%;
+            opacity: 0.4;
+            animation: float-cloud 70s linear infinite reverse;
+        }
+        .cloud-4::before { width: 75px; height: 75px; top: -35px; left: 30px; }
+        .cloud-4::after { width: 95px; height: 95px; top: -48px; left: 80px; }
+
+        .cloud-5 {
+            width: 160px;
+            height: 55px;
+            top: 25%;
+            left: 75%;
+            opacity: 0.55;
+            animation: float-cloud 50s linear infinite;
+        }
+        .cloud-5::before { width: 65px; height: 65px; top: -32px; left: 22px; }
+        .cloud-5::after { width: 85px; height: 85px; top: -42px; left: 60px; }
+
+        @keyframes float-cloud {
+            from { transform: translateX(-50%); }
+            to { transform: translateX(100%); }
+        }
+
+        /* Floating hearts */
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -50px;
+            opacity: 0.6;
+            animation: float-up linear infinite;
+            font-size: 20px;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-110vh) rotate(360deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: sparkle 3s ease-in-out infinite;
+            box-shadow: 0 0 6px 2px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        /* Main card */
+        .invitation-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 
+                0 8px 32px rgba(231, 84, 128, 0.15),
+                0 2px 8px rgba(255, 143, 163, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 10;
+            animation: card-float 6s ease-in-out infinite, card-enter 1s ease-out;
+        }
+
+        @keyframes card-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes card-enter {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Decorative hearts on card */
+        .card-hearts {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+
+        .card-heart {
+            font-size: 28px;
+            animation: pulse-heart 2s ease-in-out infinite;
+        }
+
+        .card-heart:nth-child(2) { animation-delay: 0.3s; }
+        .card-heart:nth-child(3) { animation-delay: 0.6s; }
+
+        @keyframes pulse-heart {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Typography */
+        .headline {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.5rem;
+            color: var(--deep-rose);
+            margin-bottom: 24px;
+            line-height: 1.1;
+            text-shadow: 0 2px 4px rgba(231, 84, 128, 0.2);
+            animation: headline-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes headline-glow {
+            0%, 100% { text-shadow: 0 2px 4px rgba(231, 84, 128, 0.2); }
+            50% { text-shadow: 0 2px 20px rgba(231, 84, 128, 0.4); }
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #6B5B6E;
+            line-height: 1.7;
+            margin-bottom: 28px;
+            font-weight: 500;
+        }
+
+        .details {
+            background: linear-gradient(135deg, rgba(255, 181, 167, 0.2), rgba(232, 224, 240, 0.3));
+            padding: 20px 24px;
+            border-radius: 20px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255, 143, 163, 0.2);
+        }
+
+        .details-title {
+            font-family: 'Sacramento', cursive;
+            font-size: 1.8rem;
+            color: var(--deep-rose);
+            margin-bottom: 8px;
+        }
+
+        .details-text {
+            font-size: 1rem;
+            color: #7A6B7D;
+            font-weight: 500;
+        }
+
+        /* Yes button */
+        .yes-btn {
+            background: linear-gradient(135deg, var(--rose) 0%, var(--coral) 50%, var(--rose) 100%);
+            background-size: 200% 200%;
+            border: none;
+            padding: 18px 48px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 
+                0 6px 20px rgba(255, 143, 163, 0.4),
+                0 2px 4px rgba(231, 84, 128, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: btn-shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes btn-shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .yes-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.3),
+                transparent
+            );
+            transition: left 0.5s ease;
+        }
+
+        .yes-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 10px 30px rgba(255, 143, 163, 0.5),
+                0 4px 8px rgba(231, 84, 128, 0.3);
+        }
+
+        .yes-btn:hover::before {
+            left: 100%;
+        }
+
+        .yes-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Celebration overlay */
+        .celebration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+        }
+
+        .celebration.active {
+            display: block;
+        }
+
+        .confetti-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: confetti-fall linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) scale(0);
+                opacity: 1;
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(10vh) rotate(180deg) scale(1);
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Success message */
+        .success-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 48px 56px;
+            border-radius: 32px;
+            text-align: center;
+            z-index: 200;
+            box-shadow: 
+                0 20px 60px rgba(231, 84, 128, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 143, 163, 0.3);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-message.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .success-message h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 3rem;
+            color: var(--deep-rose);
+            margin-bottom: 12px;
+        }
+
+        .success-message p {
+            font-size: 1.2rem;
+            color: #6B5B6E;
+            font-weight: 500;
+        }
+
+        .success-hearts {
+            font-size: 2.5rem;
+            margin-top: 16px;
+            animation: success-bounce 0.6s ease-in-out infinite;
+        }
+
+        @keyframes success-bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .invitation-card {
+                padding: 40px 28px;
+                margin: 20px;
+            }
+
+            .headline {
+                font-size: 2.8rem;
+            }
+
+            .message {
+                font-size: 1rem;
+            }
+
+            .yes-btn {
+                padding: 16px 40px;
+                font-size: 1.2rem;
+            }
+
+            .success-message {
+                padding: 36px 28px;
+                width: 85%;
+            }
+
+            .success-message h2 {
+                font-size: 2.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dreamy sky background -->
+    <div class="sky">
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+        <div class="cloud cloud-5"></div>
+    </div>
+
+    <!-- Floating hearts -->
+    <div class="hearts-container" id="hearts"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkles" id="sparkles"></div>
+
+    <!-- Main invitation card -->
+    <div class="invitation-card">
+        <div class="card-hearts">
+            <span class="card-heart">&#x1F497;</span>
+            <span class="card-heart">&#x1F496;</span>
+            <span class="card-heart">&#x1F497;</span>
+        </div>
+        
+        <h1 class="headline">Be My Valentine?</h1>
+        
+        <p class="message">
+            I can't imagine spending this day with anyone else. 
+            You make every moment feel like magic, and I have 
+            something special planned just for us...
+        </p>
+
+        <div class="details">
+            <p class="details-title">Our Adventure Awaits</p>
+            <p class="details-text">
+                February 14th<br>
+                Time: It's a surprise!<br>
+                Dress code: Cute & cozy
+            </p>
+        </div>
+
+        <button class="yes-btn" onclick="celebrate()">
+            Yes! &#x1F495;
+        </button>
+    </div>
+
+    <!-- Celebration overlay -->
+    <div class="celebration" id="celebration"></div>
+
+    <!-- Success message -->
+    <div class="success-message" id="successMessage">
+        <h2>I knew you would!</h2>
+        <p>Can't wait to see you...</p>
+        <div class="success-hearts">&#x1F496;&#x1F497;&#x1F496;</div>
+    </div>
+
+    <script>
+        // Generate floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('hearts');
+            const hearts = ['&#x1F497;', '&#x1F496;', '&#x1F495;', '&#x1F49B;', '&#x1F49C;'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (15 + Math.random() * 20) + 's';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (16 + Math.random() * 16) + 'px';
+                container.appendChild(heart);
+            }
+        }
+
+        // Generate sparkles
+        function createSparkles() {
+            const container = document.getElementById('sparkles');
+            
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 3 + 's';
+                sparkle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Celebration function
+        function celebrate() {
+            const celebration = document.getElementById('celebration');
+            const successMessage = document.getElementById('successMessage');
+            celebration.classList.add('active');
+
+            // Create confetti hearts
+            const hearts = ['&#x1F497;', '&#x1F496;', '&#x1F495;', '&#x1F49B;', '&#x1F49C;', '&#x1F499;', '&#x2728;', '&#x1F31F;'];
+            
+            for (let i = 0; i < 60; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'confetti-heart';
+                    heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                    heart.style.left = Math.random() * 100 + '%';
+                    heart.style.top = '-5%';
+                    heart.style.fontSize = (18 + Math.random() * 24) + 'px';
+                    heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    celebration.appendChild(heart);
+
+                    // Remove after animation
+                    setTimeout(() => heart.remove(), 4000);
+                }, i * 50);
+            }
+
+            // Show success message after a short delay
+            setTimeout(() => {
+                successMessage.classList.add('show');
+            }, 800);
+        }
+
+        // Initialize
+        createFloatingHearts();
+        createSparkles();
+    </script>
+</body>
+</html>

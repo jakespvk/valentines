@@ -1,1 +1,102 @@
-<p>main works!</p>
+<!-- Golden Hour Valentine -->
+<div class="golden-hour" [class.scene-transitioning]="scene() === 'transitioning'" [class.scene-card]="scene() === 'card' || scene() === 'celebration'">
+  
+  <!-- Sky gradient background -->
+  <div class="sky"></div>
+  <div class="horizon-glow"></div>
+  
+  <!-- Paper/grain texture overlay -->
+  <div class="texture-overlay"></div>
+  
+  <!-- Sun rays (behind sun) -->
+  <div class="sun-rays">
+    @for (ray of [1,2,3,4,5,6,7,8,9,10,11,12]; track ray) {
+      <div class="ray" [style.--ray-index]="ray"></div>
+    }
+  </div>
+  
+  <!-- The Sun -->
+  <button class="sun" (click)="onSunClick()" [disabled]="scene() !== 'sunset'" aria-label="Click to open Valentine">
+    <div class="sun-core"></div>
+    <div class="sun-glow"></div>
+    <div class="sun-flare"></div>
+  </button>
+  
+  <!-- Clouds -->
+  <div class="clouds-container">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <div class="cloud cloud-4"></div>
+    <div class="cloud cloud-5"></div>
+  </div>
+  
+  <!-- Floating elements -->
+  <div class="floating-elements"></div>
+  
+  <!-- Sunset scene prompt -->
+  @if (scene() === 'sunset') {
+    <div class="sunset-prompt">
+      <span class="prompt-text">touch the sun</span>
+    </div>
+  }
+  
+  <!-- Sunburst flash overlay -->
+  <div class="sunburst-flash"></div>
+  
+  <!-- Valentine Card -->
+  @if (scene() === 'card' || scene() === 'celebration') {
+    <div class="card-container" [class.celebrating]="scene() === 'celebration'">
+      <div class="valentine-card">
+        <div class="card-shimmer"></div>
+        
+        <div class="card-content">
+          <div class="card-header">
+            <span class="decorative-heart left">&#9829;</span>
+            <h1 class="headline">Be My Valentine?</h1>
+            <span class="decorative-heart right">&#9829;</span>
+          </div>
+          
+          <p class="recipient">Dear {{ recipientName }},</p>
+          
+          <p class="message">{{ personalMessage }}</p>
+          
+          <div class="details-box">
+            <div class="detail-row">
+              <span class="detail-icon">&#10022;</span>
+              <span class="detail-text">{{ dateDetails }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-icon">&#10022;</span>
+              <span class="detail-text">{{ timeDetails }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-icon">&#10022;</span>
+              <span class="detail-text">{{ locationDetails }}</span>
+            </div>
+          </div>
+          
+          <p class="signature">{{ senderName }}</p>
+          
+          @if (scene() === 'card') {
+            <button class="yes-button" (click)="onYesClick()">
+              <span class="button-text">Yes!</span>
+              <span class="button-heart">&#9829;</span>
+            </button>
+          }
+        </div>
+      </div>
+      
+      <!-- Celebration response -->
+      @if (scene() === 'celebration') {
+        <div class="celebration-response">
+          <h2 class="celebration-text">I knew you'd say yes!</h2>
+          <div class="celebration-hearts">&#9829; &#9829; &#9829;</div>
+        </div>
+      }
+    </div>
+  }
+  
+  <!-- Celebration confetti container -->
+  <div class="celebration-container"></div>
+</div>
