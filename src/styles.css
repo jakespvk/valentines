@@ -22,9 +22,9 @@
   --cloud-gold: #FFE0C0;
   --deep-amber: #E88030;
   --warm-white: #FFF8F0;
-  --text-warm: #5C4033;
-  --text-soft: #7A6055;
-  
+  --text-warm: #9C4011;
+  --text-soft: #9C4011;
+
   /* Timing */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
